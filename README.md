@@ -1,56 +1,95 @@
-# Welcome to your Expo app 👋
+# OSINT Prototype — Expo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile OSINT aggregator. Enter a company or person name, get ranked findings across social, technical, and regulatory sources. Export as Markdown or PDF.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Scan the QR code with Expo Go. Works on iOS and Android. Web works for debugging (`npx expo start --web`).
 
-### Other setup steps
+### Optional keys
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Create `.env`:
+```
+EXPO_PUBLIC_GITHUB_TOKEN=ghp_...          # raises rate limit; app works without
+EXPO_PUBLIC_NEWSAPI_KEY=...               # enables real NewsAPI; otherwise mocked
+```
 
-## Learn more
+## Architecture
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+SearchInput
+    │
+    ▼
+Registry → 14 Adapters (parallel, per-adapter useQuery)
+    │
+    ▼
+Resolver (confidence + corroboration + filter)
+    │
+    ▼
+Risk (severity escalation + downgrade)
+    │
+    ▼
+UI (streaming render, sorted by severity + confidence)
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Adapter interface
 
-## Join the community
+Any adapter implements:
 
-Join our community of developers creating universal apps.
+```ts
+interface Adapter {
+  id: string;
+  name: string;
+  category: "social" | "technical" | "regulatory";
+  supports: ("person" | "company")[];
+  mocked?: boolean;
+  fetch(input: SearchInput, signal: AbortSignal): Promise<Finding[]>;
+}
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Add a new source in 15 lines: drop a new file in `src/adapters/<category>/`, implement `Adapter`, add one line to `src/adapters/registry.ts`.
+
+### Sources
+
+| Category | Source | Status |
+|---|---|---|
+| Social | Wikipedia, Hacker News, Reddit | Real |
+| Social | Twitter/X, LinkedIn | Mocked |
+| Technical | RDAP, DoH (Google), GitHub, crt.sh | Real |
+| Technical | HIBP | Mocked |
+| Regulatory | GDELT, SEC EDGAR | Real |
+| Regulatory | NewsAPI | Real if key, else mocked |
+| Regulatory | OpenCorporates | Mocked |
+
+Mocked sources are visibly labeled in the UI with a "mock" tag and in reports with `[MOCK]`.
+
+### Analysis
+
+**Confidence** (0–1):
+```
+base       = signals.nameMatch ?? 0.5
++ 0.15     if domain match
++ 0.10     each for location / industry match
++ 0.05     per corroborating source (same host across different adapters)
+```
+
+Findings with confidence < 0.3 and no corroboration are filtered as false positives.
+
+**Severity** starts from a per-adapter default (e.g. HIBP = critical, RDAP = info). Downgraded one step when confidence < 0.3. Critical with ≥2 corroborating sources is locked.
+
+**Overall risk** is the max severity across surviving findings, tie-broken by confidence.
+
+## Known limits & production considerations
+
+- API keys are public via `EXPO_PUBLIC_*` — fine for prototype; move behind a backend (Cloudflare Worker, Vercel Function) for production.
+- HIBP, Twitter/X, LinkedIn, OpenCorporates are mocked. HIBP requires a paid key; Twitter/X has no free tier; LinkedIn has no public API.
+- No persistence beyond in-memory Zustand + React Query cache.
+
+## Sample report
+
+See `samples/report-aigeeks.md` for an example of the exported Markdown format the app produces via the Export sheet.
