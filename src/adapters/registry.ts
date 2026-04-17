@@ -4,6 +4,7 @@ import { dohAdapter } from "./technical/doh";
 import { githubAdapter } from "./technical/github";
 import { crtShAdapter } from "./technical/crt-sh";
 import { wikipediaAdapter } from "./social/wikipedia";
+import { hnAdapter } from "./social/hn";
 
 export const adapters: Adapter[] = [
   rdapAdapter,
@@ -11,6 +12,7 @@ export const adapters: Adapter[] = [
   githubAdapter,
   crtShAdapter,
   wikipediaAdapter,
+  hnAdapter,
 ];
 
 export function getAdaptersFor(entityType: EntityType): Adapter[] {
