@@ -8,6 +8,7 @@ import { hnAdapter } from "./social/hn";
 import { redditAdapter } from "./social/reddit";
 import { gdeltAdapter } from "./regulatory/gdelt";
 import { secEdgarAdapter } from "./regulatory/sec-edgar";
+import { newsApiAdapter } from "./regulatory/newsapi";
 
 export const adapters: Adapter[] = [
   rdapAdapter,
@@ -19,6 +20,7 @@ export const adapters: Adapter[] = [
   redditAdapter,
   gdeltAdapter,
   secEdgarAdapter,
+  newsApiAdapter,
 ];
 
 export function getAdaptersFor(entityType: EntityType): Adapter[] {
