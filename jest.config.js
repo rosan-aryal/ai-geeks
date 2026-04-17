@@ -3,7 +3,7 @@ module.exports = {
     {
       displayName: "node",
       testEnvironment: "node",
-      testMatch: ["<rootDir>/src/lib/**/*.test.ts", "<rootDir>/src/adapters/**/*.test.ts"],
+      testMatch: ["<rootDir>/src/lib/**/*.test.ts", "<rootDir>/src/adapters/**/*.test.ts", "<rootDir>/src/analysis/**/*.test.ts"],
       transform: {
         "^.+\\.(ts|tsx|js|jsx)$": ["ts-jest", { tsconfig: { jsx: "react", esModuleInterop: true } }],
       },
