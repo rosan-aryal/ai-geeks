@@ -6,18 +6,24 @@ Mobile OSINT aggregator. Enter a company or person name, get ranked findings acr
 
 ```bash
 npm install
+cp .env.example .env
 npx expo start
 ```
 
 Scan the QR code with Expo Go. Works on iOS and Android. Web works for debugging (`npx expo start --web`).
 
-### Optional keys
+The app runs out of the box with no keys — every adapter either hits a public endpoint or returns labeled mock data. Keys only unlock live data for a few sources.
 
-Create `.env`:
-```
-EXPO_PUBLIC_GITHUB_TOKEN=ghp_...          # raises rate limit; app works without
-EXPO_PUBLIC_NEWSAPI_KEY=...               # enables real NewsAPI; otherwise mocked
-```
+### Optional keys (reviewers — skip unless you want live data)
+
+Edit `.env` and fill in whichever you care about:
+
+| Var | Get one | Effect when missing |
+|---|---|---|
+| `EXPO_PUBLIC_GITHUB_TOKEN` | https://github.com/settings/tokens (no scopes needed) | App still works; public GitHub rate limit applies (~60 req/h/IP) |
+| `EXPO_PUBLIC_NEWSAPI_KEY` | https://newsapi.org/register (free tier) | NewsAPI adapter returns a mock finding |
+
+`.env` is gitignored — do not commit real keys.
 
 ## Architecture
 
