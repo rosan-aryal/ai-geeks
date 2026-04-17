@@ -52,6 +52,7 @@
     "@testing-library/react-native": "^13.3.3",
     "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
+    "expo-modules-core": "^55.0.22",
     "jest": "^30.3.0",
     "jest-expo": "^55.0.16",
     "postcss": "^8.5.10",
