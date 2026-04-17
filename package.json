@@ -8,9 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "lint": "expo lint"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^7.15.5",
@@ -49,15 +47,9 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.2",
-    "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "^30.0.0",
     "@types/react": "~19.2.2",
-    "expo-modules-core": "^55.0.22",
-    "jest": "^30.3.0",
-    "jest-expo": "^55.0.16",
     "postcss": "^8.5.10",
     "tailwindcss": "^4.2.2",
-    "ts-jest": "^29.4.9",
     "typescript": "~5.9.2"
   },
   "overrides": {
