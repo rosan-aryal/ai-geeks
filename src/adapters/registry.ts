@@ -6,6 +6,7 @@ import { crtShAdapter } from "./technical/crt-sh";
 import { wikipediaAdapter } from "./social/wikipedia";
 import { hnAdapter } from "./social/hn";
 import { redditAdapter } from "./social/reddit";
+import { gdeltAdapter } from "./regulatory/gdelt";
 
 export const adapters: Adapter[] = [
   rdapAdapter,
@@ -15,6 +16,7 @@ export const adapters: Adapter[] = [
   wikipediaAdapter,
   hnAdapter,
   redditAdapter,
+  gdeltAdapter,
 ];
 
 export function getAdaptersFor(entityType: EntityType): Adapter[] {
