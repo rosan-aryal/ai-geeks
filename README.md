@@ -84,12 +84,6 @@ Findings with confidence < 0.3 and no corroboration are filtered as false positi
 
 **Overall risk** is the max severity across surviving findings, tie-broken by confidence.
 
-## Known limits & production considerations
-
-- API keys are public via `EXPO_PUBLIC_*` — fine for prototype; move behind a backend (Cloudflare Worker, Vercel Function) for production.
-- HIBP, Twitter/X, LinkedIn, OpenCorporates are mocked. HIBP requires a paid key; Twitter/X has no free tier; LinkedIn has no public API.
-- No persistence beyond in-memory Zustand + React Query cache.
-
 ## Sample report
 
 See `samples/report-aigeeks.md` for an example of the exported Markdown format the app produces via the Export sheet.
