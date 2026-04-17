@@ -5,6 +5,7 @@ interface SearchState {
   current: SearchInput | null;
   history: SearchInput[];
   submitSearch: (input: SearchInput) => void;
+  removeFromHistory: (index: number) => void;
   clearHistory: () => void;
 }
 
@@ -20,6 +21,9 @@ export const useSearchStore = create<SearchState>((set) => ({
     history: s.history.length && sameInput(s.history[0], input)
       ? s.history
       : [input, ...s.history].slice(0, 10),
+  })),
+  removeFromHistory: (index) => set((s) => ({
+    history: s.history.filter((_, i) => i !== index),
   })),
   clearHistory: () => set({ history: [] }),
 }));

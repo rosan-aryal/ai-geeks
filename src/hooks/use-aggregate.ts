@@ -26,7 +26,6 @@ export interface AggregateResult {
 const SEV_ORDER = { info: 0, low: 1, medium: 2, high: 3, critical: 4 } as const;
 
 export function useAggregate(input: SearchInput | null): AggregateResult {
-  // useQueries is ONE hook call regardless of array length — safe when entityType changes
   const results = useQueries({
     queries: ALL_ADAPTERS.map((a) => ({
       queryKey: ["adapter", a.id, input?.query, input?.entityType, input?.hints?.domain ?? ""],

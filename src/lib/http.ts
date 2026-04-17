@@ -21,7 +21,6 @@ export async function httpGet<T = unknown>(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-  // chain external signal if provided
   opts.signal?.addEventListener("abort", () => controller.abort());
 
   try {

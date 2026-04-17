@@ -23,24 +23,24 @@ export function CategoryCard({ category, states, findings }: Props) {
 
   return (
     <View className="mx-4 mb-4 rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden">
-      <Pressable onPress={() => setOpen(!open)} className="px-4 py-3 border-b border-slate-100 active:bg-slate-50">
+      <Pressable onPress={() => setOpen(!open)} className="px-4 py-4 border-b border-slate-100 active:bg-slate-50">
         <View className="flex-row justify-between items-center">
-          <Text className="font-semibold text-slate-900">{TITLES[category]}</Text>
-          <Text className="text-xs text-slate-500">{catFindings.length} finding{catFindings.length === 1 ? "" : "s"}</Text>
+          <Text className="text-base font-semibold text-slate-900">{TITLES[category]}</Text>
+          <Text className="text-sm text-slate-500">{catFindings.length} finding{catFindings.length === 1 ? "" : "s"}</Text>
         </View>
       </Pressable>
 
       <View className="px-4 py-2">
         {cats.map((s) => (
-          <View key={s.adapter.id} className="flex-row items-center justify-between py-1">
+          <View key={s.adapter.id} className="flex-row items-center justify-between py-1.5">
             <View className="flex-row items-center gap-2">
               {s.loading ? <ActivityIndicator size="small" /> : s.errored ? <Text className="text-red-500">⚠</Text> : <Text className="text-emerald-500">✓</Text>}
-              <Text className="text-xs text-slate-700">{s.adapter.name}{s.adapter.mocked ? " (mock)" : ""}</Text>
+              <Text className="text-sm text-slate-700">{s.adapter.name}{s.adapter.mocked ? " (mock)" : ""}</Text>
             </View>
             <View className="flex-row items-center gap-2">
-              <Text className="text-xs text-slate-500 font-mono">{s.count}</Text>
+              <Text className="text-sm text-slate-500 font-mono">{s.count}</Text>
               {s.errored ? (
-                <Pressable onPress={s.refetch}><Text className="text-xs text-sky-600">retry</Text></Pressable>
+                <Pressable onPress={s.refetch}><Text className="text-sm text-sky-600">retry</Text></Pressable>
               ) : null}
             </View>
           </View>

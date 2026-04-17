@@ -3,19 +3,16 @@ import type { ResolvedFinding, Severity } from "@/adapters/types";
 const ORDER: Severity[] = ["info", "low", "medium", "high", "critical"];
 
 export const DEFAULT_SEVERITY: Record<string, Severity> = {
-  // technical
   rdap: "info",
   doh: "info",
   github: "info",
   "crt-sh": "low",
   hibp: "critical",
-  // social
   wikipedia: "info",
   hn: "info",
   reddit: "low",
   twitter: "info",
   linkedin: "info",
-  // regulatory
   gdelt: "low",
   "sec-edgar": "info",
   opencorporates: "info",
@@ -29,12 +26,8 @@ function downgrade(s: Severity): Severity {
 
 export function applyRisk(findings: ResolvedFinding[]): ResolvedFinding[] {
   return findings.map((f) => {
-    let sev = f.severity;
-    if (sev === "critical" && f.corroboratingSources >= 2) {
-      // locked
-    } else if (f.confidence < 0.3) {
-      sev = downgrade(sev);
-    }
+    const locked = f.severity === "critical" && f.corroboratingSources >= 2;
+    const sev = !locked && f.confidence < 0.3 ? downgrade(f.severity) : f.severity;
     return { ...f, severity: sev };
   });
 }

@@ -1,21 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import React from "react";
-import { useColorScheme } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { queryClient } from "@/lib/query-client";
-// eslint-disable-next-line import/no-unresolved
-import "./global.css";
+import "../global.css";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   return (
     <SafeAreaProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={DefaultTheme}>
           <AnimatedSplashOverlay />
           <Stack screenOptions={{ headerShown: true }}>
             <Stack.Screen name="index" options={{ title: "OSINT" }} />

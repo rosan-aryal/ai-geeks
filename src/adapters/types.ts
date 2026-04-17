@@ -15,28 +15,28 @@ export interface SearchInput {
 }
 
 export interface FindingSignals {
-  nameMatch?: number; // 0-1, adapter's name-match strength
+  nameMatch?: number;
   locationMatch?: boolean;
   industryMatch?: boolean;
   domainMatch?: boolean;
 }
 
 export interface Finding {
-  id: string; // stable hash of (adapterId + sourceUrl)
+  id: string;
   adapterId: string;
   category: Category;
   title: string;
   summary: string;
   sourceUrl: string;
-  retrievedAt: string; // ISO
+  retrievedAt: string;
   rawData?: unknown;
   signals: FindingSignals;
-  severity: Severity; // adapter's initial guess
+  severity: Severity;
 }
 
 export interface ResolvedFinding extends Finding {
-  confidence: number; // 0-1, computed by resolver
-  corroboratingSources: number; // count of other adapters sharing identity key
+  confidence: number;
+  corroboratingSources: number;
 }
 
 export interface Adapter {
