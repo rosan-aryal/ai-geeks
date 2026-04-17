@@ -4,9 +4,9 @@ import { httpGet } from "@/lib/http";
 interface RdapResponse {
   handle?: string;
   ldhName?: string;
-  events?: Array<{ eventAction?: string; eventDate?: string }>;
+  events?: { eventAction?: string; eventDate?: string }[];
   status?: string[];
-  entities?: Array<{ roles?: string[]; vcardArray?: unknown }>;
+  entities?: { roles?: string[]; vcardArray?: unknown }[];
 }
 
 export const rdapAdapter: Adapter = {

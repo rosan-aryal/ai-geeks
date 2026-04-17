@@ -1,9 +1,9 @@
 import type { Adapter, Finding } from "@/adapters/types";
 import { httpGet } from "@/lib/http";
 
-const TYPES: Array<"A" | "MX" | "TXT"> = ["A", "MX", "TXT"];
+const TYPES: ("A" | "MX" | "TXT")[] = ["A", "MX", "TXT"];
 
-interface DohResp { Answer?: Array<{ data: string }>; }
+interface DohResp { Answer?: { data: string }[]; }
 
 export const dohAdapter: Adapter = {
   id: "doh",

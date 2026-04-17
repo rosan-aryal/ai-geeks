@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { queryClient } from "@/lib/query-client";
+// eslint-disable-next-line import/no-unresolved
 import "./global.css";
 
 export default function RootLayout() {

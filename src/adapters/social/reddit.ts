@@ -2,7 +2,7 @@ import type { Adapter, Finding } from "@/adapters/types";
 import { httpGet } from "@/lib/http";
 
 interface RedditPost { id: string; title?: string; subreddit?: string; permalink?: string; ups?: number; created_utc?: number; }
-interface RedditListing { data: { children: Array<{ data: RedditPost }> }; }
+interface RedditListing { data: { children: { data: RedditPost }[] }; }
 
 export const redditAdapter: Adapter = {
   id: "reddit",
