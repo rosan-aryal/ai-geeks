@@ -1,6 +1,9 @@
 import type { Adapter, EntityType } from "./types";
+import { rdapAdapter } from "./technical/rdap";
 
-export const adapters: Adapter[] = [];
+export const adapters: Adapter[] = [
+  rdapAdapter,
+];
 
 export function getAdaptersFor(entityType: EntityType): Adapter[] {
   return adapters.filter((a) => a.supports.includes(entityType));
